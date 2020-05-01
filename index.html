@@ -4,6 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Word Tree</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link rel="stylesheet" href="style.css">
     </head>
 
@@ -12,7 +13,31 @@
             <div class="title"> 
                 <p>Word Tree</p>
             </div>
+            <!-- Upload -->
+            <div class="upload">
+                <label for="fileselect">Import text file: </label>
+                <input type="file" id="fileselect" accept=".txt" onchange="handleFile()">
+            </div>
+            <div class="row">
+                <!--Text Overview-->
+                <div class="col-3 form-group">
+                    <div class="wrapper">
+                        <div class="form-group">
+                            <input class="form-control" type="text" placeholder="Key word" aria-label="Search" style="margin-bottom: 5px;">
+                            <textarea class="form-control rounded-0" id="textoverview" rows="23" disabled>
+                                
+                            </textarea>
+                        </div>
+                    </div>
+                </div>
+                <!--Tree-->
+                <div class="col-9">
+                    Tree
+                </div>
+            </div>
         </div>
+
+        <script type="text/javascript" src="script.js"></script>
     </body>
     
 </html>
