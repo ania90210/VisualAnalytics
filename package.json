@@ -1,0 +1,21 @@
+{
+  "name": "va_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ania90210/VisualAnalytics.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ania90210/VisualAnalytics/issues"
+  },
+  "homepage": "https://github.com/ania90210/VisualAnalytics#readme"
+}
