@@ -16,3 +16,4 @@ cats are better than kittens.
 cats are evil.
 cats are weird.
 cats eat mice.
+cats are better than dogs, but worse than birds.
