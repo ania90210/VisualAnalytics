@@ -1,13 +1,38 @@
-.title {
+.title2 {
 
     font-size: 25px;
     font-weight: bold;
     align-items: stretch;
     border-color: white;
     text-align: center;
+    margin-left: 60%;
 }
 
+#radiobuttons{
+  font-size: 12px;
+  margin-top: 15px;
+  display: inline;
+}
 
+.radbutton {
+  margin-right: 10px;
+  float: left;
+}
+
+.clickable{
+  width: 300px;
+  position: absolute;
+  top: 46px;
+  bottom: 0;
+  right: 0;
+  overflow-y: auto;
+  font-family: "Andale Mono", "Courier New", "Courier", monospace;
+}
+
+.clickable a { text-decoration: none; color: #000; }
+.clickable span.highlight { background: #ff9; color: #000; }
+.clickable span:hover { text-decoration: underline; cursor: pointer;}
+.clickable .row { height: 20px; }
 
 .upload {
   flex-direction: column;

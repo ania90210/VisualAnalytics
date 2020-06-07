@@ -15,7 +15,22 @@
     <body>
         <div class="container-fluid">
             <div class="title row"> 
-                <div class="col-11"><span class = "title2">Word Tree</span></div>
+                <div class="col-8"><span class = "title2">Word Tree</span></div>
+                <div class="col-3" id="radiobuttons">
+                  <div class="radbutton">
+                    <input type="radio"  name="treetype" value="prefix" checked="true">
+                    <label for="male">Prefix</label>
+                  </div>
+                  <div class="radbutton">
+                    <input type="radio" name="treetype" value="suffix">
+                    <label for="female">Suffix</label>
+                  </div>
+                  <div class="radbutton">
+                    <input type="radio" name="treetype" value="double">
+                    <label for="other">Double</label>
+                  </div>
+                  
+                </div>
                 <div class="col-1"><button type="button"  class="helpbtn btn" title="Help" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-question-circle" aria-hidden="false"></i></button>
                     <!-- Modal -->
                     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -51,10 +66,11 @@
                 <div class="col-3 form-group">
                     <div class="wrapper">
                         <div class="form-group">
-                            <input class="form-control" type="text" placeholder="Keyword" aria-label="Search" style="margin-bottom: 5px;">
-                            <textarea class="form-control rounded-0" id="textoverview" rows="23" disabled>
+                          <div></div>
+                            <input class="form-control" onkeyup="searchWord()" id = "search" type="text" placeholder="Search keyword..." aria-label="Search" style="margin-bottom: 5px;">
+                            <div class="clickable" id="textoverview">
                                 
-                            </textarea>
+                            </div>
                         </div>
                     </div>
                 </div>
