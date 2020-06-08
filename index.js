@@ -1,6 +1,9 @@
 var firstWord ="";
 var beginWordTreeWord = "";
 var currentType = '';
+var inputs;
+var results = []; // array for storing results
+var chart = null;
 
 function draw() {
     google.charts.load('current', {packages:['wordtree']});
@@ -31,16 +34,18 @@ function drawChart() {
         }
     };
 
-    var chart = new google.visualization.WordTree(document.getElementById('wordtree_basic'));
+    chart = new google.visualization.WordTree(document.getElementById('wordtree_basic'));
+    google.visualization.events.addListener(chart, 'select', selectHandler);
     chart.draw(data, options);
-
     this.dosth();
 }
 
-/*file inputs*/
-var inputs;
-var results = []; // array for storing results
-
+function selectHandler() {
+    var selectedItem = chart.getSelection();
+    if (selectedItem) {
+        markSelectedWord(selectedItem.word);
+    }
+}
 
 function handleFile() {
     var inputCount;
@@ -50,6 +55,7 @@ function handleFile() {
         alert("File is too big. Limit is 100KB");
         return;
     }
+
     inputCount = Number(inputs.length);
     for (var i = 0; i < inputCount ; i++) {
         if (inputs[i].files && inputs[i].files[0]) {
@@ -59,7 +65,6 @@ function handleFile() {
                 results.push(event.target.result);
                 filesLoaded++;
                 if (filesLoaded == inputCount) {
-                    showResult();
                     result = results;
                 }
             };
@@ -67,12 +72,6 @@ function handleFile() {
         }
     }
     this.draw();
-}
-
-function showResult() {
-    for (var i = 0; i < inputs.length ; i++) {
-        console.log(results[i]);
-    }
 }
 
 function dosth() {
@@ -93,14 +92,27 @@ function dosth() {
     });
     var text = words.join("");
     $("#textoverview").first().html(text);
-    $(".word").on( "click", function() {
+    
+    $(".word").on("click", function() {
         firstWord = this.textContent.replace(/\./g, '');
         draw();
     });
+
+    $('#search').on('keypress', function (e) {
+        if(e.which === 13){
+           $(this).attr("disabled", "disabled");
+           searchWord();
+           $(this).removeAttr("disabled");
+        }
+    });
     
+    markSelectedWord(firstWord);
+}
+
+function markSelectedWord(word) {
     $('span').removeClass('yellow');
     $('span').removeClass('red');
-    var wordSpans = $('.word:contains("'  + firstWord + '")').closest('span');
+    var wordSpans = $('.word:contains("'  + word + '")').closest('span');
     wordSpans.addClass('red');
     var length  = wordSpans.length;
     for (var i=0; i<length; i++) {
@@ -110,21 +122,9 @@ function dosth() {
 }
 
 function searchWord() {
-    var input, filter, ul, li, a, i, txtValue;
-    input = document.getElementById('search');
-    filter = input.value.toUpperCase();
-    ul = document.getElementById("textoverview");
-    span  = ul.getElementsByTagName('span');
-
-    // Loop through all list items, and hide those who don't match the search query
-    for (i = 0; i < span.length; i++) {
-        txtValue = span[i].textContent || span[i].innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        span[i].style.display = "";
-        } else {
-        span[i].style.display = "none";
-        }
-    }
+    var searchText = document.getElementById('search').value;
+    firstWord = searchText.replace(/\./g, '');
+    draw();
 }
 
 $('input[type=radio][name=treetype]').change(function() {
@@ -137,5 +137,6 @@ $('input[type=radio][name=treetype]').change(function() {
     else if (this.value === "double") {
         currentType = 'double';
     }
+
     drawChart();
 });
