@@ -84,6 +84,8 @@ textarea::-webkit-scrollbar-thumb {
 
 .text-preview {
   font-size: 1rem;
+  height:600px;
+  overflow-y: scroll;
 }
 
 .red {
@@ -92,4 +94,17 @@ textarea::-webkit-scrollbar-thumb {
 
 .yellow {
   background-color: yellow;
+}
+
+:root {
+  --s: 100%;
+}
+.tilebar {
+  width: 100px;
+  height: 20px;
+  background-color: hsl(0, 0%, var(--s));
+  border-style: groove;
+  border-color: gray;
+  border-width: 1px;
+  margin-left: 10px;
 }

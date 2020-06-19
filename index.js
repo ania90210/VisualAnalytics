@@ -45,6 +45,7 @@ function selectHandler() {
     if (selectedItem) {
         markSelectedWord(selectedItem.word);
     }
+    // weight = selectedItem.weight;
 }
 
 function handleFile() {
@@ -124,6 +125,16 @@ function markSelectedWord(word) {
 function searchWord() {
     var searchText = document.getElementById('search').value;
     firstWord = searchText.replace(/\./g, '');
+
+    var weight = 0;
+    var words2 = $("#textoverview").first().text().split(/(?=[.\s]|\b)/);
+    words2.forEach(function(word) {
+        if(searchText == word){
+            weight++;
+        }
+    });
+    tileBar(weight);
+    
     draw();
 }
 
@@ -140,3 +151,17 @@ $('input[type=radio][name=treetype]').change(function() {
 
     drawChart();
 });
+
+function tileBar(weight) {
+    if(currentType == '') {
+        var tilebar = document.getElementById('tilebar'); 
+        var wtext = document.getElementById('weight'); 
+        wtext.innerHTML = weight;
+        if(weight <= 1) tilebar.style.setProperty('--s', '100%');
+        else if(weight > 1 && weight < 12 ) {
+            var a = 100 - (10 * weight);
+            tilebar.style.setProperty('--s', a+'%');
+        }
+        else if(weight >= 12) tilebar.style.setProperty('--s', '0%');
+    }
+}
