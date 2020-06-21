@@ -3,7 +3,7 @@
   <head>
       <meta charset="UTF-8">
       <title>Word Tree</title>
-      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+      <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>      
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
       <link rel="stylesheet" href="font/font-awesome-4.7.0/css/font-awesome.min.css">
@@ -14,23 +14,9 @@
   </head>
   <body>
     <div class="container-fluid">
-      <div class="title row"> 
-        <div class="col-8"><span class = "title2">Word Tree</span></div>
-        <div class="col-3" id="radiobuttons">
-          <div class="radbutton">
-            <input type="radio"  name="treetype" value="prefix" checked="true">
-            <label for="male">Prefix</label>
-          </div>
-          <div class="radbutton">
-            <input type="radio" name="treetype" value="suffix">
-            <label for="female">Suffix</label>
-          </div>
-          <div class="radbutton">
-            <input type="radio" name="treetype" value="double">
-            <label for="other">Double</label>
-          </div>
-        </div>
-        <div class="col-1"><button type="button"  class="helpbtn btn" title="Help" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-question-circle" aria-hidden="false"></i></button>
+      <div class="title row">
+        <div class="col-11 title2"><span class ="title2">Word Tree</span></div>
+        <div class="col-1"><button type="button" class="helpbtn btn" title="Help" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-question-circle" aria-hidden="false"></i></button>
           <!-- Modal -->
           <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -42,7 +28,7 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  Help text
+                  Add help
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -52,11 +38,17 @@
           </div>
         </div>
       </div>
-      <!-- Upload -->
-      <div class="upload">
-          <label for="fileselect">Import text file: </label>
-          <input type="file" id="fileselect" accept=".txt" onchange="handleFile()">
-      </div>            
+       <!-- Upload -->
+      <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+          <div class="upload" action="fileupload">
+            <label for="fileselect">Import text file: </label>
+            <input type="file" id="fileselect" name="fileselect" accept=".txt">
+          </div>  
+        </div>
+        <div class="col-1"></div>
+      </div>                
       <div class="row">
         <!--Text Overview-->
         <div class="col-3 form-group">
@@ -83,7 +75,7 @@
         </div>
         <!--Tree-->
         <div class="col-9">
-            <div id="wordtree_basic" style="width: 900px; height: 500px;"></div>
+            <div id="wordtree_basic" style="height: 100%; overflow-x: scroll; overflow-y: hidden;"></div>
         </div>
       </div>
     </div>

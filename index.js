@@ -4,6 +4,28 @@ var currentType = '';
 var inputs;
 var results = []; // array for storing results
 var chart = null;
+var sentiments = []
+
+$(document).ready(function () {
+    $("#fileselect").on("change", function () {
+        var fd = new FormData();
+        var files = $('#fileselect')[0].files[0];
+        fd.append('files', files);
+
+        $.ajax({
+            url: "/fileupload",
+            type: "post",
+            data: fd,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                firstWord = '';
+                sentiments = data;
+                handleFile();
+            }
+        })
+    });
+});
 
 function draw() {
     google.charts.load('current', {packages:['wordtree']});
@@ -12,17 +34,18 @@ function draw() {
 
 function drawChart() {
     var substrings = results[0].split('.')
-    var finalArray = [['Phrases']];
+    var finalArray = [['phrase', {role: 'style'}]];
     if(firstWord === "") {
         firstWord = substrings[0].split(" ")[0];
     }
 
+    // filter empty sentences
     finalArray = finalArray.filter(function(e){
         return e;
     }); 
 
-    substrings.forEach(element => {
-        finalArray.push([element + '.']);   
+    substrings.forEach((element, index) => {
+        finalArray.push([element + '.', mapSentimentToColor(sentiments[index].comparative)]);   
     });
     var data = google.visualization.arrayToDataTable(finalArray);
 
@@ -31,8 +54,17 @@ function drawChart() {
             format: 'implicit',
             type: currentType,
             word: firstWord
+        },
+        width : 7000,
+        maxFontSize: 24,
+        tooltip: {
+            isHtml: true
         }
     };
+
+    var x = document.getElementById('wordtree_basic')
+    if(x.innerHTML != "")
+        x.innerHTML = "";
 
     chart = new google.visualization.WordTree(document.getElementById('wordtree_basic'));
     google.visualization.events.addListener(chart, 'select', selectHandler);
@@ -41,11 +73,13 @@ function drawChart() {
 }
 
 function selectHandler() {
-    var selectedItem = chart.getSelection();
-    if (selectedItem) {
-        markSelectedWord(selectedItem.word);
-    }
-    // weight = selectedItem.weight;
+    $("text").on("dblclick", function(d,i) { 
+        var word = $(d.target)[0].innerHTML;
+        if(word != firstWord) {
+            firstWord = word;
+            draw();
+        }   
+    })
 }
 
 function handleFile() {
@@ -62,17 +96,21 @@ function handleFile() {
         if (inputs[i].files && inputs[i].files[0]) {
             var FR = new FileReader();
             FR.onload = function (event) {
+                firstWord = '';
                 document.getElementById('textoverview').textContent = this.result;
+                results = [];
+                chart = null;
                 results.push(event.target.result);
                 filesLoaded++;
                 if (filesLoaded == inputCount) {
                     result = results;
                 }
+                
+                draw();
             };
             FR.readAsText(inputs[i].files[0]);
         }
     }
-    this.draw();
 }
 
 function dosth() {
@@ -95,9 +133,20 @@ function dosth() {
     $("#textoverview").first().html(text);
     
     $(".word").on("click", function() {
-        firstWord = this.textContent.replace(/\./g, '');
-        draw();
+        var selectedWord = this.textContent.replace(/\./g, '');
+        if(selectedWord != firstWord) {
+            firstWord = selectedWord;
+            draw();
+        }           
     });
+
+    $("text").on("dblclick", function(d,i) { 
+        var word = $(d.target)[0].innerHTML;
+        if(word != firstWord) {
+            firstWord = word;
+            draw();
+        }   
+    })
 
     $('#search').on('keypress', function (e) {
         if(e.which === 13){
@@ -113,7 +162,9 @@ function dosth() {
 function markSelectedWord(word) {
     $('span').removeClass('yellow');
     $('span').removeClass('red');
-    var wordSpans = $('.word:contains("'  + word + '")').closest('span');
+    var wordSpans = $('.word').filter(function() {
+        return $(this).text() === word;
+        }).closest('span');
     wordSpans.addClass('red');
     var length  = wordSpans.length;
     for (var i=0; i<length; i++) {
@@ -138,20 +189,6 @@ function searchWord() {
     draw();
 }
 
-$('input[type=radio][name=treetype]').change(function() {
-    if (this.value === "prefix") {
-        currentType = '';
-    }
-    else if (this.value === "suffix") {
-        currentType = 'suffix';
-    }
-    else if (this.value === "double") {
-        currentType = 'double';
-    }
-
-    drawChart();
-});
-
 function tileBar(weight) {
     if(currentType == '') {
         var tilebar = document.getElementById('tilebar'); 
@@ -164,4 +201,16 @@ function tileBar(weight) {
         }
         else if(weight >= 12) tilebar.style.setProperty('--s', '0%');
     }
+}
+
+function mapSentimentToColor(sentiment){
+    if(sentiment < -0.5)
+        return '#8b0000';
+    if(sentiment < 0)
+        return '#FF0000';
+    if(sentiment == 0)
+        return '#000000';
+    if(sentiment < 0.5)
+        return '#32CD32';
+    return '#6B8E23';	
 }
