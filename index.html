@@ -16,19 +16,24 @@
     <div class="container-fluid">
       <div class="title row">
         <div class="col-11 title2"><span class ="title2">Word Tree</span></div>
-        <div class="col-1"><button type="button" class="helpbtn btn" title="Help" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-question-circle" aria-hidden="false"></i></button>
+        <div class="col-1"><button type="button" class="helpbtn btn" title="Help" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-question-circle fa-2x" aria-hidden="false"></i></button>
           <!-- Modal -->
           <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                  <h5 class="modal-title" id="exampleModalLongTitle">How to interact with the word tree:</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
-                  Add help
+                  <p>1. Choose file you want to analyze.</p>
+                  <p>2. Type in a word in the search field to make it the root word.</p>
+                  <p>3. Select a word from the text display on the left side to make it the root word.</p>
+                  <p>4. Click on a word in the tree to build a sequence.</p>
+                  <p>5. Double-click on a word in the tree to make it the root word.</p>
+                  <p>6. Do not double-click on the root word of the tree.</p>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -60,10 +65,6 @@
                 </button>
               </div>
               <input class="form-control" id="search" type="text" placeholder="Search keyword..." aria-label="Search" aria-describedby="basic-addon1">
-            </div>
-            <div style="align-items: center; padding-left: 100px;" class="row">
-              <p id = "weight" style="font-size: 18px; margin-top: 10px;" >.</p>
-              <div class="tilebar" id="tilebar"></div>
             </div>
             <div class="row text-preview" >
               <div class="col-12">

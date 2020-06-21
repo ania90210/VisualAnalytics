@@ -5,6 +5,15 @@
     text-align: center;
 }
 
+.modal-title{
+  font-size: 24px;
+  font-style: bold;
+}
+
+.modal-body{
+  font-size: 16px;
+  font-style: italic;
+}
 #radiobuttons{
   font-size: 12px;
   margin-top: 15px;
