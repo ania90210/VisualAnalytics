@@ -2,12 +2,12 @@
 
 How to start the program?
 
-Open folder in terminal and run command : \
+Open folder in terminal and run command :
 ```
 npm install
 ```
 
-Then run the node server with : \
+Then run the node server with :
 ```
 node app.js
 ```
