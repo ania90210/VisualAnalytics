@@ -4,6 +4,7 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var fs = require('fs');
 const fileUpload = require('express-fileupload');
+var pos = require('pos');
 var sentiment = new Sentiment();
 var app = express();
 app.use(fileUpload());
@@ -36,7 +37,11 @@ app.post('/fileupload', async (req, res) => {
                 var sentimentResult = sentiment.analyze(element);
                 finalArray.push(sentimentResult);   
             });
-            res.send(finalArray);            
+
+            var words = new pos.Lexer().lex(text);
+            var tagger = new pos.Tagger();
+            var taggedWords = tagger.tag(words);
+            res.send([finalArray, taggedWords]);            
         }
     } catch (err) {
         console.log(err)

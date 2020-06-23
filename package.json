@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "script.js",
+  "bin": "app.js",
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -24,6 +25,11 @@
     "express-fileupload": "^1.1.7-alpha.3",
     "jquery": "^3.5.1",
     "nodemon": "^2.0.4",
+    "pos": "^0.4.2",
     "sentiment": "^5.0.2"
+  },
+  "pkg": {
+    "scripts": "/*.js",
+    "assets": "/*"
   }
 }

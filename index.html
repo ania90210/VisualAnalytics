@@ -33,7 +33,7 @@
                   <p>3. Select a word from the text display on the left side to make it the root word.</p>
                   <p>4. Click on a word in the tree to build a sequence.</p>
                   <p>5. Double-click on a word in the tree to make it the root word.</p>
-                  <p>6. Do not double-click on the root word of the tree.</p>
+                  <p>6. Do <b>not</b> click on the root word of the tree.</p>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -43,7 +43,7 @@
           </div>
         </div>
       </div>
-       <!-- Upload -->
+      <!-- Upload -->
       <div class="row">
         <div class="col-1"></div>
         <div class="col-10">
@@ -65,7 +65,7 @@
                 </button>
               </div>
               <input class="form-control" id="search" type="text" placeholder="Search keyword..." aria-label="Search" aria-describedby="basic-addon1">
-            </div>
+            </div>            
             <div class="row text-preview" >
               <div class="col-12">
                 <div class="clickable" id="textoverview" style="text-align: left;">
@@ -75,8 +75,32 @@
           </div>
         </div>
         <!--Tree-->
-        <div class="col-9">
-            <div id="wordtree_basic" style="height: 100%; overflow-x: scroll; overflow-y: hidden;"></div>
+        <div class="col-6">
+            <div id="wordtree_basic" style="height:620px; overflow-x: scroll; overflow-y: hidden; bottom: 0; display: block;"></div>
+        </div>
+        <div class="col-3" style="height: 620px;">
+          <div>
+            <div class="row">
+              <div class="col-6">
+                <span>Current root: </span> 
+              </div>
+              <div class="col-6">
+                <span id="firstWord"></span> 
+              </div>              
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <span>Occurances: </span><span id = "weight" style="font-size: 18px; margin-top: 10px;" ></span>
+              </div>
+              <div class="col-6">
+                <div class="tilebar" id="tilebar"></div>
+              </div>
+            </div>
+          </div>
+          <div id="barchart" style="height: 250px;">
+          </div>
+          <div id="piechart" style="height: 350px;">
+          </div>
         </div>
       </div>
     </div>
