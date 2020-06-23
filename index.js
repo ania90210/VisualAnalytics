@@ -1,6 +1,6 @@
-var firstWord ="";
+var firstWord =""; // root word
 var beginWordTreeWord = "";
-var currentType = '';
+var currentType = ''; // current type of the word tree = prefix tree by default
 var inputs;
 var results = []; // array for storing results
 var chart = null;
@@ -9,6 +9,7 @@ var sentiments = [];
 var topWords = [];
 var ignorePosTags = [",", ".", ":", ";", "$", "#", '"', "(", ")"];
 
+// Uploading a text file and parsing the text content to sentences
 $(document).ready(function () {
     $("#fileselect").on("change", function () {
         var fd = new FormData();
@@ -34,6 +35,7 @@ $(document).ready(function () {
     });
 });
 
+// Callback function provided by the google api for drawing and displaying the word tree
 function draw() {
     google.charts.load('current', {packages:['wordtree','corechart']});
     google.charts.setOnLoadCallback(drawChart);    
@@ -41,6 +43,8 @@ function draw() {
     google.charts.setOnLoadCallback(drawBarChart);    
 }
 
+// Function that splits the input text and stores into array of sentences.
+// This array serves as an input array to the word tree.
 function drawChart() {
     var substrings = results[0].split('.')
     var finalArray = [['phrase', {role: 'style'}]];
@@ -86,11 +90,16 @@ function drawChart() {
         return e;
     }); 
 
+    // Map sentences to a color, according to its sentiment 
+    // (gradient from light green to dark red)
     substrings.forEach((element, index) => {
         finalArray.push([element + '.', mapSentimentToColor(sentiments[index].comparative)]);   
     });
+
+     // finalArray is the processed text serving as the input for google.visualization
     var data = google.visualization.arrayToDataTable(finalArray);
 
+    // Defining options provided by the API 
     var options = {
         wordtree: {
             format: 'implicit',
@@ -102,15 +111,19 @@ function drawChart() {
     };
 
     var x = document.getElementById('wordtree_basic')
+
+    // Reseting the word tree (after uploading a new .txt file)
     if(x.innerHTML != "")
         x.innerHTML = "";
 
     chart = new google.visualization.WordTree(document.getElementById('wordtree_basic'));
+    // Adding listener on the chart, for when a user searches for a word in text
     google.visualization.events.addListener(chart, 'select', selectHandler);
     chart.draw(data, options);
-    this.dosth();
+    this.encapsulateWords();
 }
 
+// Draw pie chart for number of occurances and their pos tag
 function drawPieChart(){
     var dataTable = [['POS Tag', 'Occurances']];
     var tags = [];
@@ -155,7 +168,6 @@ function drawPieChart(){
 
     var options = {
         title: 'POS Tag occurances',
-        //sliceVisibilityThreshold: 0.05,
         legend : {
             position: "bottom"
         },
@@ -169,6 +181,8 @@ function drawPieChart(){
     pieChart.draw(data, options);
 }
 
+// Draw bar chart with word type and number of occurances for the whole text 
+// (all words are considered in making this chart)
 function drawBarChart(){
     var finalBarArray = [["Word", 
     "Coordinating Conjunction",
@@ -253,10 +267,6 @@ function drawBarChart(){
                 tagsCountArray.find(function(e){
                     if(e[0] == element[1])
                         e[1]++;
-                    /* just to test stacking functionality
-                    if(topWord.name == "will" && e[0] == "NN"){
-                        e[1]++;
-                    }*/
                 })
             }
         });
@@ -273,6 +283,7 @@ function drawBarChart(){
         finalBarArray.push(returnArray);
     })
 
+    // Invoking the API functionality for drawing the chart
     var data = google.visualization.arrayToDataTable(finalBarArray);
     var view = new google.visualization.DataView(data);
     var options = {
@@ -293,6 +304,7 @@ function drawBarChart(){
     barChart.draw(view, options);
 }
 
+// Implementation of the double-click functionality, where the double-clicked word becomes the new root word
 function selectHandler() {
     $("text").on("dblclick", function(d,i) { 
         var word = $(d.target)[0].innerHTML;
@@ -303,6 +315,8 @@ function selectHandler() {
     })
 }
 
+// Function for handling the file, by checking that the file is not larger than 100KB
+// If the file is larger than 100KB, the browser alert appears
 function handleFile() {
     var inputCount;
     var filesLoaded = 0;
@@ -312,6 +326,7 @@ function handleFile() {
         return;
     }
 
+    // Processing the input text by saving the text information in an array and initializing the chart
     inputCount = Number(inputs.length);
     for (var i = 0; i < inputCount ; i++) {
         if (inputs[i].files && inputs[i].files[0]) {
@@ -335,7 +350,8 @@ function handleFile() {
     }
 }
 
-function dosth() {
+// Encapsulate words into a correct class depending on the type (normal word, dot, punctuation, space)
+function encapsulateWords() {
     var words = $("#textoverview").first().text().split(/(?=[.\s]|\b)/);
     words.forEach(function(value, index, collection) {
         var isPunctuation = !!value.match(/^[.,:!?]/)
@@ -354,6 +370,7 @@ function dosth() {
     var text = words.join("");
     $("#textoverview").first().html(text);
     
+    // Join the word clicked on to the rest of the phrase (root word)
     $(".word").on("click", function() {
         var selectedWord = this.textContent.replace(/\./g, '');
         if(selectedWord != firstWord) {
@@ -362,6 +379,7 @@ function dosth() {
         }           
     });
 
+    // Make the word that user double-clicked on the new root word
     $("text").on("dblclick", function(d,i) { 
         var word = $(d.target)[0].innerHTML;
         if(word != firstWord) {
@@ -370,6 +388,7 @@ function dosth() {
         }   
     })
 
+    // Keypress listener for the search field
     $('#search').on('keypress', function (e) {
         if(e.which === 13){
            $(this).attr("disabled", "disabled");
@@ -378,9 +397,12 @@ function dosth() {
         }
     });
     
+    // Call on markSelectedWord function, to correctly color the word
     markSelectedWord(firstWord);
 }
 
+// Correctly color the word - red (the root word) or 
+// yellow (the words comming after the root word until the first dot)
 function markSelectedWord(word) {
     $('span').removeClass('yellow');
     $('span').removeClass('red');
@@ -395,6 +417,7 @@ function markSelectedWord(word) {
     }
 }
 
+// Search functionality for finding a word user enetered in the search field
 function searchWord() {
     var searchText = document.getElementById('search').value;
     firstWord = searchText.replace(/\./g, '');    
@@ -413,6 +436,8 @@ function getWeight(){
     return weight;
 }
 
+// Create a tile bar, with information on what is the word searched for, number of its
+// occurances and color the tile bar with correct gradient (w.r.t. the number of occurences)
 function tileBar(weight) {
     if(currentType == '') {
         var tilebar = document.getElementById('tilebar'); 
@@ -426,6 +451,10 @@ function tileBar(weight) {
     }
 }
 
+// Color the word according to its sentiment 
+// (positive - light to dark green, 
+// negative - light to dark red),
+// neutral - black
 function mapSentimentToColor(sentiment){
     if(sentiment < -0.5)
         return '#8b0000';
@@ -438,6 +467,7 @@ function mapSentimentToColor(sentiment){
     return '#6B8E23';	
 }
 
+// Mapping the word type with color and key word
 function getTagDict() {
     var dict = [];
     dict.push({
@@ -663,6 +693,7 @@ function getTagDict() {
     return dict;
 }
 
+// Get tag value
 function posTagsMapper(tag){
     var dict = getTagDict();
     var mapping = dict.find(function(el){
@@ -671,7 +702,7 @@ function posTagsMapper(tag){
     })
     return mapping.value;           
 }
-
+// Get tag color
 function getMappedColor(tag){
     var dict = getTagDict();
     var mapping = dict.find(function(el){
@@ -685,6 +716,7 @@ function getMappedColor(tag){
     return mapping.color; 
 }
 
+// Get all tag colors
 function getAllColorMappings(){
     var mappings = [];
     var dict = getTagDict();
