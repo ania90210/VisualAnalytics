@@ -1,5 +1,7 @@
 # VisualAnalytics
 
+A prototype of visual data analysis called Word Tree with additional features taken from research about this visualization technique.
+
 How to start the program?
 
 Open folder in terminal and run command :
